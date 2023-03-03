@@ -25,14 +25,14 @@ class ContaSerializer(serializers.ModelSerializer):
 
 
 class ContaSaqueSerializer(serializers.ModelSerializer):
-    transacoes = TransacaoSerializer(many=True)
 
     class Meta:
         model = Conta
-        fields = ["saldo", "transacoes"]
+        fields = ["saldo"]
         extra_fields = [
             "valor",
         ]
+        
 
     @classmethod
     def verifica_limite(cls, instance):
@@ -68,7 +68,7 @@ class ContaSaqueSerializer(serializers.ModelSerializer):
                 "tipo": "Saque",
             }
             Transacao.objects.create(**comprovante)
-            super().__init__(instance, data, **kwargs)
+            return super().__init__(instance, data, **kwargs)
         
 
         raise serializers.ValidationError("Conta bloqueada")
@@ -90,8 +90,9 @@ class ContaDepositoSerializer(serializers.ModelSerializer):
         model = Conta
         fields = ["saldo"]
         extra_fields = [
-            "valor",
+            "valor","comprovante"
         ]
+        
 
     def __init__(self, instance=None, data=..., **kwargs):
         if instance.flagAtivo:
@@ -101,8 +102,8 @@ class ContaDepositoSerializer(serializers.ModelSerializer):
                 "valor": data["valor"],
                 "tipo": "Depósito",
             }
-            Transacao.objects.create(**comprovante)
-            super().__init__(instance, data, **kwargs)
+            comprovante=Transacao.objects.create(**comprovante)
+            return super().__init__(instance, data, **kwargs)
         raise serializers.ValidationError("Conta bloqueada")
 
 
