@@ -13,7 +13,8 @@ const formSchema = yup.object().shape({
 });
 
 const onSubmitFunction = (data: any) => {
-  api.post("/login", data).then((res) => {
+  console.log("api");
+  api.post("/pessoas/login/", data).then((res) => {
     console.log(res);
   });
 };
@@ -60,8 +61,20 @@ export const PaginaAcesso = () => {
                 console.log("inicio");
               }}
             >
-              Acessar
+              teste
             </ThemeButton>
+            <button
+              type="submit"
+              onClick={() =>
+                api
+                  .post("pessoas/login/", { username: "000.000.000-00" })
+                  .then((res) => {
+                    console.log(res);
+                  })
+              }
+            >
+              Acessar
+            </button>
             <ThemeButton
               backGroundColor={"var(--whiteFixed)"}
               color={"var(--grey0)"}
