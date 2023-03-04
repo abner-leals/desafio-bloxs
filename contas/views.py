@@ -20,6 +20,14 @@ class CreateListContaView(SerializerByMethodMixin, generics.ListCreateAPIView):
     }
 
 
+class ListContaView(SerializerByMethodMixin, generics.RetrieveAPIView):
+    queryset = Conta.objects.all()
+    serializer_map = {
+        "GET": ContaSerializer,
+        "POST": ContaSerializer,
+    }
+
+
 class SaqueContaView(generics.UpdateAPIView):
     queryset = Conta.objects.all()
     serializer_class = ContaSaqueSerializer

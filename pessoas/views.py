@@ -4,6 +4,7 @@ from .serializers import (
     PessoaDetalhadaSerializer,
     PessoaSerializer,
 )
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, views
 from .models import Pessoa
 
@@ -25,8 +26,7 @@ class ListEspecificPessoaView(generics.RetrieveAPIView):
 
 class FalsoLogin(views.APIView):
     def post(self, request: views.Request) -> views.Response:
-
-        pessoa = Pessoa.objects.get(**request.data)
+        pessoa = get_object_or_404(Pessoa, **request.data)
         if pessoa:
             serializer = FalsoLoginSerializer(pessoa)
             return views.Response(serializer.data, views.status.HTTP_200_OK)

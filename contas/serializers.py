@@ -8,9 +8,18 @@ import ipdb
 
 
 class ContaSerializer(serializers.ModelSerializer):
+    transacoes = TransacaoSerializer(many=True)
+
     class Meta:
         model = Conta
-        fields = ["limiteSaqueDiario", "idPessoa", "tipoConta", "idConta", "apelido"]
+        fields = [
+            "limiteSaqueDiario",
+            "idPessoa",
+            "tipoConta",
+            "idConta",
+            "apelido",
+            "transacoes",
+        ]
         read_only_fields = [
             "flagAtivo",
             "idConta",
