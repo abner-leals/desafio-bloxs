@@ -9,15 +9,36 @@ import { GlobalStyle } from "./styles/global";
 import { Header } from "./components/header";
 import "./App.css";
 import { RegistroPessoa } from "./pages/cadastro_pessoa";
-import { RegistroConta } from "./pages/cadastro_conta";
+import { CadastroConta } from "./pages/cadastro_conta";
+import { Login } from "./pages/inicial";
+import { Route, Routes, BrowserRouter, useRoutes } from "react-router-dom";
+
 function App() {
   return (
-    <div className="App">
+    <BrowserRouter>
       <GlobalStyle />
-
-      <PaginaAcesso />
-    </div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<DashboardPessoa />} />
+        <Route path="/dashboard-conta/:idConta" element={<DashboardConta />} />
+        {/* <Route path="users/*" element={<Users />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
+// function Users() {
+//   return (
+//     <div>
+//       <nav>
+//         <Link to="me">My Profile</Link>
+//       </nav>
+
+//       <Routes>
+//         <Route path=":id" element={<UserProfile />} />
+//         <Route path="me" element={<OwnUserProfile />} />
+//       </Routes>
+//     </div>
+//   );
+// }
 export default App;

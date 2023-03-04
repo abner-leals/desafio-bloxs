@@ -5,14 +5,20 @@ import { api } from "../../services";
 
 import { ThemeButton } from "../../components/buttons";
 import { InputMask } from "../../components/inputs";
-
+import { Container, Form, FormContainer } from "./style";
 import { useState } from "react";
+import { formataCPF } from "../../utils";
 import { ModalAviso } from "../../components/modal_aviso";
 import { useNavigate } from "react-router-dom";
-import { Container, Form, FormContainer } from "./style";
 
-export const CadastroConta = () => {
+interface IData {
+  email?: string;
+  password?: string;
+}
+
+export const Login = () => {
   const history = useNavigate();
+  const [cpf, setCpf] = useState("");
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
@@ -26,10 +32,7 @@ export const CadastroConta = () => {
   });
 
   const formSchema = yup.object().shape({
-    limiteSaqueDiario: yup.string().required("Campo Obrigatório"),
-    tipoConta: yup.string().required("Campo Obrigatório"),
-    apelido: yup.string(),
-    idPessoa: yup.string(),
+    username: yup.string().required("Campo Obrigatório"),
   });
 
   const {
@@ -40,10 +43,9 @@ export const CadastroConta = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const onSubmitFunction = (data: any) => {
-    console.log(data);
+  const onSubmitFunction = (data: IData) => {
     api
-      .post("contas/", data)
+      .post("pessoas/login/", data)
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("@usuario", JSON.stringify(res.data));
@@ -52,7 +54,8 @@ export const CadastroConta = () => {
       .catch((err) => {
         setModalContent({
           title: "Error!",
-          titleSucess: "Houve um erro na conexão, verifique  e tente novamente",
+          titleSucess:
+            "Houve um erro na busca, verifique seu usuário e tente novamente",
           messageSucess: [err.response.data.message],
         });
         setOpen(true);
@@ -69,44 +72,26 @@ export const CadastroConta = () => {
       />
       <Container>
         <FormContainer>
+          <h1 className="title">M$Conta</h1>
+          <p>Gerencie as suas contas em um só app, prático e rápido.</p>
+
           <Form onSubmit={handleSubmit(onSubmitFunction)}>
-            <h3>Preencha os dados abaixo e comece já.</h3>
             <InputMask
-              type="Text"
-              labelText="ID do usuário"
+              type="text"
+              labelText="Usuário"
+              placeholder="000.000.000-00"
+              fieldContext={register("username")}
               choseWidth="100vw"
-              fieldContext={register("idPessoa")}
-              error={String(errors.idPessoa?.message)}
+              error={String(errors.username?.message)}
               className={"userInput"}
-              value={1}
-            />
-            <InputMask
-              type="Text"
-              labelText="Apelido da Conta"
-              placeholder="Informe o apelido aqui"
-              choseWidth="100vw"
-              maxLength={10}
-              fieldContext={register("apelido")}
-              error={String(errors.apelido?.message)}
-              className={"userInput"}
-            />
-            <InputMask
-              type="number"
-              min="1"
-              step="any"
-              labelText="Limite de saque diario *"
-              placeholder="Informe o limite aqui"
-              choseWidth="100vw"
-              fieldContext={register("limiteSaqueDiario")}
-              error={String(errors.limiteSaqueDiario?.message)}
-            />
-            <InputMask
-              type="number"
-              labelText="Tipo de Conta *"
-              placeholder="Tipo da conta - Somente o Numero"
-              choseWidth="100vw"
-              fieldContext={register("tipoConta")}
-              error={String(errors.tipoConta?.message)}
+              value={cpf}
+              onChange={(e: any) => {
+                setCpf(
+                  formataCPF(
+                    e.target.value.replace(/[^\d]/g, "").substring(0, 11)
+                  )
+                );
+              }}
             />
 
             <ThemeButton
@@ -116,10 +101,22 @@ export const CadastroConta = () => {
               borderColor={"var(--brand1)"}
               type="submit"
             >
-              Enviar
+              Entrar
             </ThemeButton>
           </Form>
           <div className="registerLink"></div>
+          <ThemeButton
+            backGroundColor={"var(--whiteFixed)"}
+            color={"var(--grey0)"}
+            size={"big50"}
+            borderColor={"var(--grey4)"}
+            type="submit"
+            hoverColor={"var(--whiteFixed)"}
+            hoverbackGroundColor={"var(--grey0)"}
+            handleClick={() => {}}
+          >
+            Cadastrar
+          </ThemeButton>
         </FormContainer>
       </Container>
     </>

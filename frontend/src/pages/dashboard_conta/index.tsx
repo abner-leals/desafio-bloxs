@@ -1,24 +1,38 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, ContainerOpcoes, ContainerSaldo } from "./style";
-import { CardProfile } from "../../components/card_profile";
-import { CardContas } from "../../components/card_conta";
 import { ThemeButton } from "../../components/buttons";
-import { ModalGenerico } from "../../components/modal";
 import { Movimentacao } from "../movimentacao";
-import { Header } from "../../components/header";
+import { api } from "../../services";
+import { useParams } from "react-router-dom";
 
 interface Props {
   user: any;
 }
 
 export const DashboardConta = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [tipo, setTipo] = useState("");
+  const [conta, setConta] = useState<any>();
+  const { idConta } = useParams();
+  console.log(idConta);
+
+  useEffect(() => {
+    api
+      .get(`contas/${idConta}`)
+      .then((res) => {
+        setConta(res.data);
+      })
+      .catch((res) => {
+        console.log(res);
+        setConta({ saldo: "saldo indefinido" });
+      });
+    setConta(50);
+  }, []);
+
   return (
     <Container id="ancora">
       <ContainerSaldo>
-        <h1>Saldo</h1>
-        <p>valor informado</p>
+        <h1>{`Saldo R$ ${conta?.saldo}`}</h1>
       </ContainerSaldo>
       <ContainerOpcoes>
         <ThemeButton
@@ -27,7 +41,8 @@ export const DashboardConta = () => {
           size={"auto"}
           borderColor={"var(--grey0)"}
           handleClick={() => {
-            console.log("Botão auto");
+            setTipo(`contas/${idConta}/deposito/`);
+            setOpen(true);
           }}
         >
           Depositar
@@ -39,7 +54,8 @@ export const DashboardConta = () => {
           size={"auto"}
           borderColor={"var(--grey0)"}
           handleClick={() => {
-            console.log("Botão auto");
+            setTipo(`contas/${idConta}/saque/`);
+            setOpen(true);
           }}
         >
           Sacar
@@ -50,7 +66,7 @@ export const DashboardConta = () => {
           size={"auto"}
           borderColor={"var(--grey0)"}
           handleClick={() => {
-            console.log("Botão auto");
+            console.log("Bloqueado");
           }}
         >
           Transferir

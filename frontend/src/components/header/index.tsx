@@ -1,8 +1,10 @@
 import React from "react";
 import { Cabecalho } from "./style";
 import { ThemeButton } from "../buttons";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate();
   return (
     <Cabecalho>
       <ThemeButton
@@ -11,7 +13,8 @@ export const Header = () => {
         size={"auto"}
         borderColor={"var(--grey0)"}
         handleClick={() => {
-          console.log("Botão auto");
+          localStorage.removeItem("@usuario");
+          navigate("/");
         }}
       >
         Sair

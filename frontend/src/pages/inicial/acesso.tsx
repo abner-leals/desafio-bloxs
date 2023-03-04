@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const formSchema = yup.object().shape({
-  email: yup.string().email("Email inválido").required("Campo Obrigatório"),
+  username: yup.string().required("Campo Obrigatório"),
 });
 
 const onSubmitFunction = (data: any) => {
