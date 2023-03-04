@@ -75,7 +75,7 @@ WSGI_APPLICATION = "_bloxs.wsgi.application"
 # Database
 
 DATABASES = {
-    "sqlite": {
+    "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
@@ -84,16 +84,16 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"), 
-        "PORT":  os.getenv("POSTGRES_PORT"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     },
-    "default": {
+    "local": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST_LOCAL"), 
-        "PORT":  os.getenv("POSTGRES_PORT"),
+        "HOST": os.getenv("POSTGRES_HOST_LOCAL"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     },
 }
 

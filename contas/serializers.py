@@ -10,11 +10,7 @@ import ipdb
 class ContaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conta
-        fields = [
-            "limiteSaqueDiario",
-            "idPessoa",
-            "tipoConta","idConta",
-        ]
+        fields = ["limiteSaqueDiario", "idPessoa", "tipoConta", "idConta", "apelido"]
         read_only_fields = [
             "flagAtivo",
             "idConta",
@@ -25,14 +21,12 @@ class ContaSerializer(serializers.ModelSerializer):
 
 
 class ContaSaqueSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Conta
         fields = ["saldo"]
         extra_fields = [
             "valor",
         ]
-        
 
     @classmethod
     def verifica_limite(cls, instance):
@@ -47,9 +41,6 @@ class ContaSaqueSerializer(serializers.ModelSerializer):
             soma += numero.valor
 
         return soma * (-1)
-
-
-
 
     def __init__(self, instance=None, data=..., **kwargs):
         if instance.flagAtivo:
@@ -69,9 +60,10 @@ class ContaSaqueSerializer(serializers.ModelSerializer):
             }
             Transacao.objects.create(**comprovante)
             return super().__init__(instance, data, **kwargs)
-        
 
         raise serializers.ValidationError("Conta bloqueada")
+
+
 class ContaBloqueioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conta
@@ -89,10 +81,7 @@ class ContaDepositoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conta
         fields = ["saldo"]
-        extra_fields = [
-            "valor","comprovante"
-        ]
-        
+        extra_fields = ["valor", "comprovante"]
 
     def __init__(self, instance=None, data=..., **kwargs):
         if instance.flagAtivo:
@@ -102,7 +91,7 @@ class ContaDepositoSerializer(serializers.ModelSerializer):
                 "valor": data["valor"],
                 "tipo": "Depósito",
             }
-            comprovante=Transacao.objects.create(**comprovante)
+            comprovante = Transacao.objects.create(**comprovante)
             return super().__init__(instance, data, **kwargs)
         raise serializers.ValidationError("Conta bloqueada")
 

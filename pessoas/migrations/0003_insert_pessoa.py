@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 def populate_my_table(apps, schema_editor):
     Model = apps.get_model("pessoas", "Pessoa")
     pessoa = {
-        "cpf": "050.234.667-59",
+        "cpf": "000.000.000-00",
         "dataNascimento": "2000-01-01",
         "nome": "Alan Santos",
         "password": make_password("123456"),

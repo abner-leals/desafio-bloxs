@@ -6,9 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 #LOGS DE ERROS
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR  /bloxs
+WORKDIR  /api-bloxs
 
-COPY . /bloxs/
+COPY . /api-bloxs/
 
 RUN pip install -U pip
 RUN pip install -r requirements.txt

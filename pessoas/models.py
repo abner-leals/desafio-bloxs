@@ -20,6 +20,9 @@ class CustomUserManager(UserManager):
         user = self.model(username=username, email=email, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
+        u = Pessoa.objects.get(username__exact=username)
+        u.set_password(password)
+        u.save()
         return user
 
     def create_user(self, username=None, email=None, password=None, **extra_fields):

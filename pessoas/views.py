@@ -1,6 +1,10 @@
 from utils.mixins import SerializerByMethodMixin
-from .serializers import PessoaSerializer
-from rest_framework import generics
+from .serializers import (
+    FalsoLoginSerializer,
+    PessoaDetalhadaSerializer,
+    PessoaSerializer,
+)
+from rest_framework import generics, views
 from .models import Pessoa
 
 
@@ -14,3 +18,18 @@ class CreatePessoaView(SerializerByMethodMixin, generics.CreateAPIView):
 
 
 # Create your views here.
+class ListEspecificPessoaView(generics.RetrieveAPIView):
+    queryset = Pessoa.objects.all()
+    serializer_class = PessoaDetalhadaSerializer
+
+
+class FalsoLogin(views.APIView):
+    def post(self, request: views.Request) -> views.Response:
+
+        pessoa = Pessoa.objects.get(**request.data)
+        if pessoa:
+            serializer = FalsoLoginSerializer(pessoa)
+            return views.Response(serializer.data, views.status.HTTP_200_OK)
+        return views.Response(
+            {"detail": "usuario não encontrado"}, views.status.HTTP_400_BAD_REQUEST
+        )
