@@ -113,7 +113,9 @@ export const Login = () => {
             type="submit"
             hoverColor={"var(--whiteFixed)"}
             hoverbackGroundColor={"var(--grey0)"}
-            handleClick={() => {}}
+            handleClick={() => {
+              history("/register/");
+            }}
           >
             Cadastrar
           </ThemeButton>

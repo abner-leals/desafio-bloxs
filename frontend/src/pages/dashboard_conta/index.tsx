@@ -3,18 +3,14 @@ import { Container, ContainerOpcoes, ContainerSaldo } from "./style";
 import { ThemeButton } from "../../components/buttons";
 import { Movimentacao } from "../movimentacao";
 import { api } from "../../services";
-import { useParams } from "react-router-dom";
-
-interface Props {
-  user: any;
-}
+import { useNavigate, useParams } from "react-router-dom";
 
 export const DashboardConta = () => {
   const [open, setOpen] = useState(false);
   const [tipo, setTipo] = useState("");
   const [conta, setConta] = useState<any>();
   const { idConta } = useParams();
-  console.log(idConta);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -69,7 +65,7 @@ export const DashboardConta = () => {
             console.log("Bloqueado");
           }}
         >
-          Transferir
+          Bloquear
         </ThemeButton>
 
         <ThemeButton
@@ -78,8 +74,7 @@ export const DashboardConta = () => {
           size={"auto"}
           borderColor={"var(--grey0)"}
           handleClick={() => {
-            setTipo("extrato");
-            setOpen(true);
+            navigate(`dashboard-conta/extrato/${idConta}/`);
           }}
         >
           Extrato
