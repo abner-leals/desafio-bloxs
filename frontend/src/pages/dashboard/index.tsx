@@ -4,12 +4,20 @@ import { CardProfile } from "../../components/card_profile";
 import { CardContas } from "../../components/card_conta";
 import { ThemeButton } from "../../components/buttons";
 import { Header } from "../../components/header";
+const pessoa = {
+  idPessoa: 5,
+  contas: [],
+  username: "051.080.005-78",
+  cpf: "051.080.005-78",
+  nome: "Anderson Silva",
+  dataNascimento: "25/01/2005",
+};
 
-interface Props {
-  user: any;
-}
-
-export const DashboardPessoa = ({ user }: Props) => {
+export const DashboardPessoa = () => {
+  let user: any = localStorage.getItem("@usuario");
+  if (!user) {
+    user = pessoa;
+  }
   return (
     <Container>
       <Header />

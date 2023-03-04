@@ -1,22 +1,24 @@
-import { useState } from "react";
-import { InputMask } from "../../components/inputs";
-import { formataCPF } from "../../utils";
-
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api } from "../../services";
 
 import { ThemeButton } from "../../components/buttons";
-
+import { InputMask } from "../../components/inputs";
+import { Container, Form, FormContainer } from "./style";
+import { useState } from "react";
+import { formataCPF } from "../../utils";
 import { ModalAviso } from "../../components/modal_aviso";
 import { useNavigate } from "react-router-dom";
-import { Container, Form, FormContainer } from "./style";
 
-export const RegistroPessoa = () => {
-  const [valueCPF, setValueCPF] = useState("");
+interface IData {
+  email?: string;
+  password?: string;
+}
 
+export const Login = () => {
   const history = useNavigate();
+  const [cpf, setCpf] = useState("");
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
@@ -24,17 +26,13 @@ export const RegistroPessoa = () => {
     messageSucess: [""],
   });
   const [buttonContent, setButtonContent] = useState({
-    active: true,
-    text: "Pagina Principal",
-    onClick: () => {
-      history("/");
-    },
+    active: false,
+    text: "",
+    onClick: () => {},
   });
 
   const formSchema = yup.object().shape({
-    nome: yup.string().required("Campo Obrigatório"),
-    cpf: yup.string().required("Campo Obrigatório"),
-    dataNascimento: yup.string().required("Campo Obrigatório"),
+    username: yup.string().required("Campo Obrigatório"),
   });
 
   const {
@@ -45,19 +43,19 @@ export const RegistroPessoa = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const onSubmitFunction = (data: any) => {
-    console.log(data);
+  const onSubmitFunction = (data: IData) => {
     api
-      .post("pessoas/", data)
+      .post("pessoas/login/", data)
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("@usuario", JSON.stringify(res.data));
-        history("/");
+        history("/dashboard/");
       })
       .catch((err) => {
         setModalContent({
           title: "Error!",
-          titleSucess: "Houve um erro na conexão, verifique  e tente novamente",
+          titleSucess:
+            "Houve um erro na busca, verifique seu usuário e tente novamente",
           messageSucess: [err.response.data.message],
         });
         setOpen(true);
@@ -74,42 +72,26 @@ export const RegistroPessoa = () => {
       />
       <Container>
         <FormContainer>
+          <h1 className="title">M$Conta</h1>
+          <p>Gerencie as suas contas em um só app, prático e rápido.</p>
+
           <Form onSubmit={handleSubmit(onSubmitFunction)}>
-            <h3>Preencha os dados abaixo e comece já.</h3>
-            <InputMask
-              type="Text"
-              labelText="Nome"
-              choseWidth="100vw"
-              fieldContext={register("nome")}
-              error={String(errors.nome?.message)}
-              className={"userInput"}
-            />
             <InputMask
               type="text"
-              labelText="CPF"
+              labelText="Usuário"
               placeholder="000.000.000-00"
+              fieldContext={register("username")}
               choseWidth="100vw"
-              value={valueCPF}
+              error={String(errors.username?.message)}
+              className={"userInput"}
+              value={cpf}
               onChange={(e: any) => {
-                setValueCPF(
+                setCpf(
                   formataCPF(
                     e.target.value.replace(/[^\d]/g, "").substring(0, 11)
                   )
                 );
               }}
-              fieldContext={register("cpf")}
-              error={String(errors.cpf?.message)}
-              className={"userInput"}
-            />
-            <InputMask
-              type="date"
-              min="1"
-              step="any"
-              labelText="Limite de saque diario *"
-              placeholder="Informe o limite aqui"
-              choseWidth="100vw"
-              fieldContext={register("dataNascimento")}
-              error={String(errors.dataNascimento?.message)}
             />
 
             <ThemeButton
@@ -119,10 +101,24 @@ export const RegistroPessoa = () => {
               borderColor={"var(--brand1)"}
               type="submit"
             >
-              Enviar
+              Entrar
             </ThemeButton>
           </Form>
           <div className="registerLink"></div>
+          <ThemeButton
+            backGroundColor={"var(--whiteFixed)"}
+            color={"var(--grey0)"}
+            size={"big50"}
+            borderColor={"var(--grey4)"}
+            type="submit"
+            hoverColor={"var(--whiteFixed)"}
+            hoverbackGroundColor={"var(--grey0)"}
+            handleClick={() => {
+              history("/register/");
+            }}
+          >
+            Cadastrar
+          </ThemeButton>
         </FormContainer>
       </Container>
     </>
