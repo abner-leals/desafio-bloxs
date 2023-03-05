@@ -68,7 +68,7 @@ cd desafio-bloxs/
 
 # Como executar o projeto
 
-## Front end web
+## Backend
 
 ### Pré-requisitos:
 
