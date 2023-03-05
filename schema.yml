@@ -1,0 +1,396 @@
+openapi: 3.0.3
+info:
+  title: BLOXS
+  version: 1.0.0
+  description: API teste
+paths:
+  /api/contas/:
+    get:
+      operationId: contas_list
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conta'
+          description: ''
+    post:
+      operationId: contas_create
+      tags:
+      - contas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Conta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Conta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Conta'
+        required: true
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conta'
+          description: ''
+  /api/contas/{idConta}/:
+    get:
+      operationId: contas_retrieve
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conta'
+          description: ''
+  /api/contas/{idConta}/bloqueio/:
+    put:
+      operationId: contas_bloqueio_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: contas_bloqueio_partial_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/contas/{idConta}/deposito/:
+    put:
+      operationId: contas_deposito_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: contas_deposito_partial_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/contas/{idConta}/extrato/:
+    get:
+      operationId: contas_extrato_retrieve
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtratoSaldo'
+          description: ''
+  /api/contas/{idConta}/saldo/:
+    get:
+      operationId: contas_saldo_retrieve
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContaSaldo'
+          description: ''
+  /api/contas/{idConta}/saque/:
+    put:
+      operationId: contas_saque_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: contas_saque_partial_update
+      parameters:
+      - in: path
+        name: idConta
+        schema:
+          type: integer
+        description: A unique integer value identifying this conta.
+        required: true
+      tags:
+      - contas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/extrato/:
+    get:
+      operationId: extrato_list
+      tags:
+      - extrato
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transacao'
+          description: ''
+  /api/pessoas/:
+    post:
+      operationId: pessoas_create
+      tags:
+      - pessoas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /api/pessoas/{idPessoa}/:
+    get:
+      operationId: pessoas_retrieve
+      parameters:
+      - in: path
+        name: idPessoa
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - pessoas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PessoaDetalhada'
+          description: ''
+  /api/pessoas/login/:
+    post:
+      operationId: pessoas_login_create
+      tags:
+      - pessoas
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Conta:
+      type: object
+      properties:
+        limiteSaqueDiario:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        idPessoa:
+          type: integer
+          nullable: true
+        tipoConta:
+          type: integer
+        idConta:
+          type: integer
+          readOnly: true
+        apelido:
+          type: string
+          nullable: true
+          maxLength: 50
+        transacoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transacao'
+      required:
+      - idConta
+      - limiteSaqueDiario
+      - tipoConta
+      - transacoes
+    ContaSaldo:
+      type: object
+      properties:
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+    ExtratoSaldo:
+      type: object
+      properties:
+        transacoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transacao'
+      required:
+      - transacoes
+    PessoaDetalhada:
+      type: object
+      properties:
+        nome:
+          type: string
+          maxLength: 150
+        cpf:
+          type: string
+          maxLength: 14
+        dataNascimento:
+          type: string
+          format: date
+        contas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conta'
+      required:
+      - contas
+      - cpf
+      - nome
+    Transacao:
+      type: object
+      properties:
+        idTransacao:
+          type: integer
+          readOnly: true
+        valor:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        dataTransacao:
+          type: string
+          format: date-time
+          readOnly: true
+        tipo:
+          type: string
+          maxLength: 20
+        idConta:
+          type: integer
+      required:
+      - dataTransacao
+      - idConta
+      - idTransacao
+      - tipo
+      - valor
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
