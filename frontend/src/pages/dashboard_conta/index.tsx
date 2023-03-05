@@ -4,9 +4,21 @@ import { ThemeButton } from "../../components/buttons";
 import { Movimentacao } from "../movimentacao";
 import { api } from "../../services";
 import { useNavigate, useParams } from "react-router-dom";
+import { ModalAviso } from "../../components/modal_aviso";
 
 export const DashboardConta = () => {
   const [open, setOpen] = useState(false);
+  const [openAviso, setOpenAviso] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    titleSucess: "",
+    messageSucess: [""],
+  });
+  const [buttonContent, setButtonContent] = useState({
+    active: false,
+    text: "",
+    onClick: () => {},
+  });
   const [tipo, setTipo] = useState("");
   const [conta, setConta] = useState<any>();
   const { idConta } = useParams();
@@ -27,6 +39,12 @@ export const DashboardConta = () => {
 
   return (
     <Container id="ancora">
+      <ModalAviso
+        modal={modalContent}
+        open={openAviso}
+        setOpen={setOpenAviso}
+        button={buttonContent}
+      />
       <ContainerSaldo>
         <h1>{`Saldo R$ ${conta?.saldo}`}</h1>
       </ContainerSaldo>
@@ -62,10 +80,43 @@ export const DashboardConta = () => {
           size={"auto"}
           borderColor={"var(--grey0)"}
           handleClick={() => {
-            console.log("Bloqueado");
+            setModalContent({
+              title: "Atenção!",
+              titleSucess: "Deseja realmente alterar o status (Ativo)?",
+              messageSucess: [],
+            });
+            setButtonContent({
+              active: true,
+              text: "Confirmar",
+              onClick: () => {
+                api
+                  .patch(`contas/${idConta}/bloqueio`)
+                  .then((res) => {
+                    setModalContent({
+                      title: "Sucesso!",
+                      titleSucess: "Status alterado",
+                      messageSucess: [],
+                    });
+                    setButtonContent({
+                      active: false,
+                      text: "",
+                      onClick: () => {},
+                    });
+                  })
+                  .catch(() => {
+                    setModalContent({
+                      title: "ErRos!",
+                      titleSucess: "Não foi possível alterar o status",
+                      messageSucess: [],
+                    });
+                  });
+              },
+            });
+
+            setOpenAviso(true);
           }}
         >
-          Bloquear
+          {conta.flagAtio ? "Bloquear" : "Desbloquear"}
         </ThemeButton>
 
         <ThemeButton
